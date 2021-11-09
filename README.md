@@ -1,6 +1,17 @@
 # Neural Cryptanalysis on Classic Ciphers
 
-**Aim:** Cryptanalysis identifies weaknesses of ciphers and investigates methods to exploit them in order to compute the plaintext and/or the secret cipher key. Exploitation is nontrivial and, in many cases, weaknesses have been shown to be effective only on reduced versions of the cipher. The goal is to perform Cryptanalysis on Classical Ciphers using Neural Networks.
+## Aim
+Cryptanalysis identifies weaknesses of ciphers and investigates methods to exploit them in order to compute the plaintext and/or the secret cipher key. Exploitation is nontrivial and, in many cases, weaknesses have been shown to be effective only on reduced versions of the cipher. The goal is to perform Cryptanalysis on Classical Ciphers using Neural Networks.
+
+## Dataset
+
+The dataset was created using the [Common Passwords List](https://www.kaggle.com/wjburns/common-password-list-rockyoutxt) from Kaggle. While this can be done with any NLP Dataset, using this particular dataset gives a twofold advantage:
+
+1. Passwords can often be random. 
+2. Passwords are limited by length, so the computation required is lower.
+3. Passwords are one single word, so sequence dependency will not be a problem.
+4. The dataset is large (14 million passwords) and thus can be cut short to speed up the training process.
+
 
 ## Usage
 
