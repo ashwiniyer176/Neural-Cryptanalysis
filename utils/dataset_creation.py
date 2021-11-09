@@ -21,7 +21,7 @@ def createDataset(df, algorithm, name):
     # Go to utils/encryption.py to make a function for a different encryption algorithm. Then, replace the
     print("Applying algorithm to passwords")
     results = df['Passwords'].progress_apply(lambda x: algorithm(
-        x, np.random.randint(low=1, high=20))).values
+        x, np.random.randint(low=1, high=26))).values
     results = list(zip(*results))
     ciphertext = list(results[0])
     keys = list(results[1])
