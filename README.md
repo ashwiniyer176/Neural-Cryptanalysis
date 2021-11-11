@@ -26,6 +26,7 @@ The dataset was created using the [Common Passwords List](https://www.kaggle.com
 2. Open `utils/dataset_creation.py` and import your function
 3. Go to the `__main__` block of code.
 4. Call `createDataset(df,encryption.your_algorithm,'YourFileName')`
+5. Run `python utils/dataset_creation.py`
 
 ## Contributors
 
