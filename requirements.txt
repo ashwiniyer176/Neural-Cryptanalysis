@@ -20,3 +20,6 @@ threadpoolctl==3.0.0
 toml==0.10.2
 tqdm==4.62.3
 wincertstore==0.2
+pyaes
+pbkdf2
+pyDes

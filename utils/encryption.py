@@ -1,5 +1,9 @@
-import string
+import binascii
 
+from pyDes import des, CBC, PAD_PKCS5
+import pyaes
+import pbkdf2
+import unicodedata
 
 def caesar_cipher(plainText, key):
     """
@@ -33,13 +37,46 @@ def caesar_cipher(plainText, key):
 
     return (cipher_text, key)
 
+def aes_encrypt(text, seed):
+  key = pbkdf2.PBKDF2(seed, '').read(32)
+  aes = pyaes.AESModeOfOperationCTR(key)
+  ciphertext = aes.encrypt(text)
+  return (binascii.hexlify(ciphertext), seed)
 
-if __name__ == "__main__":
-    file = open('data/rockyou.txt', 'r')
-    count = 0
-    for x in file:
-        count += 1
-        print(x)
-        print(caesar_cipher(x, 1))
-        if count == 6:
-            break
+def des_encrypt(text, seed):
+    secret_seed = seed
+    iv = secret_seed
+    k = des(secret_seed, CBC, iv, pad=None, padmode=PAD_PKCS5)
+    text = unicodedata.normalize('NFKD', text).encode('ascii', 'replace')
+    en = k.encrypt(text, padmode=PAD_PKCS5)
+    return (binascii.b2a_hex(en).decode(), seed)
+
+
+def vigenere_cipher(text, key):
+    enc = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    ciph = ''
+    key = key.lower()
+    text = text.lower()
+    j = 0
+    for i in range(len(text)):
+        try:
+            if text[i].isalpha() or text[i].isnumeric():
+                ciph += enc[(enc.index(text[i])+enc.index(key[j])) % len(enc)]
+                j += 1
+                j %= len(key)
+            else:
+                ciph += text[i]
+        except:
+            ciph += text[i]
+    return (ciph, key)
+
+
+# if __name__ == "__main__":
+#     file = open('data/rockyou.txt', 'r')
+#     count = 0
+#     for x in file:
+#         count += 1
+#         print(x)
+#         print(caesar_cipher(x, 1))
+#         if count == 6:
+#             break
