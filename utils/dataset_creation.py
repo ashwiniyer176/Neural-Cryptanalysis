@@ -3,6 +3,8 @@ import pandas as pd
 import encryption
 import time
 from tqdm import tqdm
+import string
+import random
 
 np.random.seed(30)
 
@@ -16,11 +18,22 @@ def createDataset(df, algorithm, name):
     """
     # Convert all passwords to strings
 
+    # Generate random seeds
+    keys = 26
+    randStrings = [randStr() for i in range(keys)]
+
+    keyIsNum = (algorithm == encryption.caesar_cipher)
+
     start = time.time()
     df['Passwords'] = df['Passwords'].apply(lambda x: str(x))
     # Go to utils/encryption.py to make a function for a different encryption algorithm. Then, replace the
     print("Applying algorithm to passwords")
-    results = df['Passwords'].progress_apply(lambda x: algorithm(x)).values
+    if keyIsNum:
+        results = df['Passwords'].progress_apply(lambda x: algorithm(
+            x, np.random.randint(low=1, high=26))).values
+    else:
+        results = df['Passwords'].progress_apply(lambda x: algorithm(
+            x, randStrings[np.random.randint(low=1, high=26)])).values
     results = list(zip(*results))
     ciphertext = list(results[0])
     keys = list(results[1])
@@ -34,6 +47,10 @@ def createDataset(df, algorithm, name):
     print(f"Done in {end-start} seconds.")
 
 
+def randStr(chars=string.ascii_uppercase + string.digits, N=8):
+	return ''.join(random.choice(chars) for _ in range(N))
+
+
 if __name__ == "__main__":
     tqdm.pandas()  # For progress bar
 
@@ -43,7 +60,13 @@ if __name__ == "__main__":
         delimiter="\n",
         header=None,
         names=["Passwords"],
-        encoding="ISO-8859-1"
+        encoding="ISO-8859-1",
     )
 
-    createDataset(df, encryption.caesar_cipher, 'CaesarCipher')
+    maxRows = 200000
+    df = df.sample(frac=1)[:maxRows]
+
+    createDataset(df, encryption.caesar_cipher, 'Caesar')
+    createDataset(df, encryption.vigenere_cipher, 'Vigenere')
+    createDataset(df, encryption.des_encrypt, 'DES')
+    createDataset(df, encryption.aes_encrypt, 'AES')
