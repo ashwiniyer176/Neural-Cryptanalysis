@@ -1,16 +1,20 @@
 import binascii
+import string
+import numpy as np
+np.random.seed(30)
 
 from pyDes import des, CBC, PAD_PKCS5
 import pyaes
 import pbkdf2
 import unicodedata
 
-def caesar_cipher(plainText, key):
+def caesar_cipher(plainText):
     """
     Args:
     plainText(string): Text to be encrypted
     key(int): Shift value for Caesar Cipher
     """
+    key = np.random.randint(low=1, high=26)
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     numbers = "0123456789"
     shifted_alphabet = alphabet[26-key:]+alphabet[0:(26-key)]
