@@ -48,7 +48,7 @@ def createDataset(df, algorithm, name):
 
 
 def randStr(chars=string.ascii_uppercase + string.digits, N=8):
-	return ''.join(random.choice(chars) for _ in range(N))
+    return ''.join(random.choice(chars) for _ in range(N))
 
 
 if __name__ == "__main__":
